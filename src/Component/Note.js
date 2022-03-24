@@ -4,76 +4,44 @@ import {
   CardActions,
   Container,
   Grid,
-  Typography,
   TextField,
-  IconButton,
+  CardContent,
+  Button,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import { Delete, Edit } from "@mui/icons-material";
 
-const useStyle = makeStyles({
-  container: {
-    marginTop: "30px",
-  },
-
-  card: {
-    boxShadow: "0px 0px 10px black",
-    borderRadius: "20px",
-  },
-
-  textField: {
-    width: "100%",
-    padding: "10px",
-  },
-
-  cardActions: {
-    display: "flex",
-    justifyContent: "flex-end",
-  },
-
-  button: {
-    padding: "0px",
-  },
-
-  // delete: {
-  //   padding: "0px",
-  // },
-});
-
-const Note = () => {
-  const classes = useStyle();
-
+const Note = ({ notes, markDelete }) => {
   return (
-    <>
-      <Container className={classes.container}>
-        <Grid item>
-          <Grid spacing={2} xs={12} sm={6} md={3} lg={4}>
-            <Card className={classes.card}>
-              <Typography align="center" variant="h6">
-                Your Saved Notes
-              </Typography>
-              <TextField
-                className={classes.textField}
-                rows={5}
-                multiline
-                // variant="standard"
-                // InputProps={{
-                //   disableUnderline: true,
-                // }}
-              />
-              <CardActions className={classes.cardActions}>
-                <IconButton color="primary">
-                  <Edit/>
-                </IconButton>
-                <IconButton color="warning">
-                  <Delete/>
-                </IconButton>
-              </CardActions>
-            </Card>
-          </Grid>
+    <Container sx={{ py: 6 }} maxWidth="md">
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6} md={4}>
+          <Card
+            sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+          >
+            {notes.map((note) => (
+              <CardContent key={note.id} sx={{ flexGrow: 1 }} disableGutters>
+                <TextField primary={note.noteString} placeholder="Your Title" sx={{ pb: 2 }} />
+                <TextField
+                  placeholder="Your Notes will render here"
+                  multiline
+                  rows={4}
+                  primary={note.noteString}
+                />
+                <span
+                  //  sx={{ display: "flex", alignItems: "flex-end" }}
+                   onClick={() => markDelete(note.id)}
+                >
+                <CardActions>
+                  <Button size="small" variant="contained" color="secondary">
+                    Delete
+                  </Button>
+                </CardActions>
+                </span>
+              </CardContent>
+            ))}
+          </Card>
         </Grid>
-      </Container>
-    </>
+      </Grid>
+    </Container>
   );
 };
 
